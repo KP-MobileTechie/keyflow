@@ -32,7 +32,7 @@ export function ResultsPanel({ finished }: { finished: FinishedTest }) {
           transition={{ type: 'spring', stiffness: 300 }}
           className="rounded-full border border-[var(--accent)] px-4 py-1 text-sm text-[var(--accent)]"
         >
-          ★ new personal best
+          <span aria-hidden="true">★ </span>new personal best
         </motion.div>
       )}
 
@@ -44,7 +44,7 @@ export function ResultsPanel({ finished }: { finished: FinishedTest }) {
       </div>
 
       {stats.timeline.length > 1 && (
-        <div className="h-56 w-full max-w-2xl">
+        <div className="h-56 w-full max-w-2xl" role="img" aria-label="WPM over time chart">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={stats.timeline} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
               <CartesianGrid stroke="#1c2430" strokeDasharray="3 3" />

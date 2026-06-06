@@ -16,6 +16,7 @@ export function LiveStats({ mode, config, elapsedMs, tracker, running }: Props) 
   const liveWpm = running && elapsedMs > 1000
     ? computeStats(tracker.keystrokes, elapsedMs).wpm
     : 0;
+  // Completed words = spaces crossed so far (generator never emits a leading space).
   const wordsTyped = tracker.text.slice(0, tracker.position).split(' ').length - 1;
   const progress = mode === 'time'
     ? `${Math.max(0, config - Math.floor(elapsedMs / 1000))}s`

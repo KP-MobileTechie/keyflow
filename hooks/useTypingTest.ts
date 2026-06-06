@@ -55,8 +55,11 @@ export function useTypingTest() {
   const restart = useCallback(() => newTest(mode, config), [newTest, mode, config]);
 
   // After hydration, swap the fixed-seed initial text for a random one.
+  // Guarded so a remount never clobbers a test already in progress.
   useEffect(() => {
-    setTracker(createTracker(generateText(TIME_MODE_WORD_POOL)));
+    setTracker((t) =>
+      t.position === 0 ? createTracker(generateText(TIME_MODE_WORD_POOL)) : t,
+    );
   }, []);
 
   const changeMode = useCallback((m: Mode, c: number) => {
