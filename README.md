@@ -2,7 +2,7 @@
 
 A typing-speed trainer with a terminal aesthetic. Live WPM, a per-key error heatmap, and your history — all local, no accounts.
 
-**[Live demo](#)** · ![CI](https://github.com/krunal85/keyflow/actions/workflows/ci.yml/badge.svg)
+**[Live demo](#)** · ![CI](https://github.com/KP-MobileTechie/keyflow/actions/workflows/ci.yml/badge.svg)
 
 <!-- Add demo.gif here after recording: ![demo](public/demo.gif) -->
 
@@ -34,7 +34,7 @@ Next.js (App Router) · TypeScript · Tailwind CSS · Framer Motion · Recharts 
 
 ## Getting started
 ```bash
-git clone https://github.com/krunal85/keyflow.git
+git clone https://github.com/KP-MobileTechie/keyflow.git
 cd keyflow
 npm install
 npm run dev      # http://localhost:3000
