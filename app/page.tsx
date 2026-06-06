@@ -4,6 +4,8 @@ import { useTypingTest } from '@/hooks/useTypingTest';
 import { ModeBar } from '@/components/ModeBar';
 import { TypingArea } from '@/components/TypingArea';
 import { LiveStats } from '@/components/LiveStats';
+import { ResultsPanel } from '@/components/ResultsPanel';
+import { HistoryPanel } from '@/components/HistoryPanel';
 
 export default function Home() {
   const test = useTypingTest();
@@ -30,11 +32,10 @@ export default function Home() {
           </p>
         </>
       ) : (
-        <div className="text-center">
-          <p className="text-4xl text-accent">{test.finished?.stats.wpm} wpm</p>
-          <p className="mt-4 text-[var(--fg-dim)]">results panel coming in Task 7 — press tab to restart</p>
-        </div>
+        <ResultsPanel finished={test.finished!} />
       )}
+
+      <HistoryPanel refreshKey={test.finished?.result.timestamp ?? 0} />
     </main>
   );
 }
