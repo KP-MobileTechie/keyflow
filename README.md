@@ -2,7 +2,7 @@
 
 A typing-speed trainer with a terminal aesthetic. Live WPM, a per-key error heatmap, and your history — all local, no accounts.
 
-**[Live demo](#)** · ![CI](https://github.com/KP-MobileTechie/keyflow/actions/workflows/ci.yml/badge.svg)
+**[Live demo](https://keyflow-rho.vercel.app)** · ![CI](https://github.com/KP-MobileTechie/keyflow/actions/workflows/ci.yml/badge.svg)
 
 <!-- Add demo.gif here after recording: ![demo](public/demo.gif) -->
 
