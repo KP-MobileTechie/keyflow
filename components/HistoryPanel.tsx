@@ -21,8 +21,8 @@ export function HistoryPanel({ refreshKey }: { refreshKey: number }) {
     <section className="w-full max-w-2xl" aria-label="recent results">
       <h2 className="mb-2 text-sm text-[var(--fg-dim)]">recent</h2>
       <ul className="divide-y divide-[var(--bg-raised)] text-sm">
-        {history.map((r) => (
-          <li key={r.timestamp} className="flex justify-between py-1.5">
+        {history.map((r, i) => (
+          <li key={`${r.timestamp}-${i}`} className="flex justify-between py-1.5">
             <span className="text-[var(--fg-dim)]">{r.mode} {r.config}</span>
             <span>{r.wpm} wpm · {r.accuracy}%</span>
             <span className="text-[var(--fg-dim)]">{new Date(r.timestamp).toLocaleDateString()}</span>
