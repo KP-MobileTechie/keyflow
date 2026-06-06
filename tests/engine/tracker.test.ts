@@ -52,5 +52,6 @@ describe('tracker', () => {
     handleChar(s0, 'a', 1000);
     expect(s0.position).toBe(0);
     expect(s0.charStates[0]).toBe('pending');
+    expect(s0.keystrokes).toHaveLength(0);
   });
 });

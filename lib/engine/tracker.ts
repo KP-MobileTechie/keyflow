@@ -1,5 +1,12 @@
 export type CharState = 'pending' | 'correct' | 'wrong';
 
+/**
+ * One entry in the append-only keystroke log.
+ *
+ * Convention: backspace entries always carry `key: ''` and `correct: false`
+ * and are NOT typing attempts — consumers computing accuracy/WPM must filter
+ * on `type === 'char'` (see lib/engine/stats.ts).
+ */
 export interface Keystroke {
   type: 'char' | 'backspace';
   key: string;        // typed char ('' for backspace)
