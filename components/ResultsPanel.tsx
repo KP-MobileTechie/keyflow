@@ -47,11 +47,14 @@ export function ResultsPanel({ finished }: { finished: FinishedTest }) {
         <div className="h-56 w-full max-w-2xl" role="img" aria-label="WPM over time chart">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={stats.timeline} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
-              <CartesianGrid stroke="#1c2430" strokeDasharray="3 3" />
+              {/* Hex values mirror the theme tokens in globals.css
+                  (--bg-raised #11161c, --fg-dim #4d5b6e, --accent #4ade80) —
+                  Recharts sets these as SVG attributes, so literals are used. */}
+              <CartesianGrid stroke="#11161c" strokeDasharray="3 3" />
               <XAxis dataKey="second" stroke="#4d5b6e" fontSize={12} unit="s" />
               <YAxis stroke="#4d5b6e" fontSize={12} />
               <Tooltip
-                contentStyle={{ background: '#11161c', border: '1px solid #1c2430', fontFamily: 'inherit' }}
+                contentStyle={{ background: '#11161c', border: '1px solid #4d5b6e', fontFamily: 'inherit' }}
                 labelFormatter={(s) => `${s}s`}
               />
               <Line type="monotone" dataKey="wpm" stroke="#4ade80" strokeWidth={2} dot={false} />
