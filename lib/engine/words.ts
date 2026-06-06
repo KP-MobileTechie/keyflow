@@ -30,8 +30,9 @@ export function generateWords(count: number, seed?: number): string[] {
   const out: string[] = [];
   let prev = '';
   for (let i = 0; i < count; i++) {
-    let w = WORDS[Math.floor(rand() * WORDS.length)];
-    if (w === prev) w = WORDS[(WORDS.indexOf(w) + 1) % WORDS.length];
+    let idx = Math.floor(rand() * WORDS.length);
+    if (WORDS[idx] === prev) idx = (idx + 1) % WORDS.length;
+    const w = WORDS[idx];
     out.push(w);
     prev = w;
   }
