@@ -31,13 +31,19 @@ export function computeStats(keystrokes: Keystroke[], durationMs: number): TestS
   const rawWpm = Math.round(totalChars / 5 / minutes);
   const accuracy = Math.round((correctChars / totalChars) * 1000) / 10;
 
-  // Cumulative WPM sampled at each elapsed second.
-  const start = keystrokes[0].timestamp;
+  // Cumulative WPM sampled at each elapsed second (single forward pass —
+  // tracker appends in timestamp order).
+  const start = chars[0].timestamp; // first actual char attempt
   const totalSeconds = Math.max(1, Math.ceil(durationMs / 1000));
   const timeline: TimelinePoint[] = [];
+  let ci = 0;
+  let correctSoFar = 0;
   for (let s = 1; s <= totalSeconds; s++) {
     const cutoff = start + s * 1000;
-    const correctSoFar = chars.filter((k) => k.timestamp <= cutoff && k.correct).length;
+    while (ci < chars.length && chars[ci].timestamp <= cutoff) {
+      if (chars[ci].correct) correctSoFar++;
+      ci++;
+    }
     timeline.push({ second: s, wpm: Math.round(correctSoFar / 5 / (s / 60)) });
   }
 

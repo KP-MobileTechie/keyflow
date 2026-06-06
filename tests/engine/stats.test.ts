@@ -68,4 +68,15 @@ describe('computeStats', () => {
     expect(s.keyErrors['a']).toEqual({ errors: 1, total: 2 });
     expect(s.keyErrors['b']).toEqual({ errors: 0, total: 1 });
   });
+
+  it('gives high consistency for a uniform rhythm and lower for an erratic one', () => {
+    // 100 chars at a perfectly steady 10/second over 10s
+    const steady = Array.from({ length: 100 }, (_, i) => ks('a', 'a', i * 100));
+    // 100 chars all crammed into the first second of a 10s test
+    const burst = Array.from({ length: 100 }, (_, i) => ks('a', 'a', i * 10));
+    const sSteady = computeStats(steady, 10000);
+    const sBurst = computeStats(burst, 10000);
+    expect(sSteady.consistency).toBeGreaterThan(80);
+    expect(sBurst.consistency).toBeLessThan(sSteady.consistency);
+  });
 });
