@@ -4,7 +4,7 @@ export interface TestResult {
   wpm: number;
   rawWpm: number;
   accuracy: number;
-  consistency: number;
+  consistency: number;   // 0–100, CV-derived (see lib/engine/stats.ts)
   timestamp: number;
 }
 
@@ -18,15 +18,32 @@ const KEY = 'keyflow:v1';
 const MAX_HISTORY = 50;
 const empty = (): StorageSchema => ({ version: 1, results: [], bests: {} });
 
+/** Null on the server (SSR) or when localStorage is inaccessible. */
+function getLocalStorage(): Storage | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
 export function configKey(mode: TestResult['mode'], config: number): string {
   return `${mode}-${config}`;
 }
 
+/**
+ * Informational only (e.g. to show a "history unavailable" notice).
+ * All other exports are always safe to call — they self-degrade when
+ * storage is missing or broken.
+ */
 export function isStorageAvailable(): boolean {
+  const ls = getLocalStorage();
+  if (!ls) return false;
   try {
     const t = 'keyflow:probe';
-    window.localStorage.setItem(t, '1');
-    window.localStorage.removeItem(t);
+    ls.setItem(t, '1');
+    ls.removeItem(t);
     return true;
   } catch {
     return false;
@@ -34,11 +51,20 @@ export function isStorageAvailable(): boolean {
 }
 
 function load(): StorageSchema {
+  const ls = getLocalStorage();
+  if (!ls) return empty();
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = ls.getItem(KEY);
     if (!raw) return empty();
     const parsed = JSON.parse(raw) as StorageSchema;
-    if (parsed?.version !== 1 || !Array.isArray(parsed.results)) return empty();
+    if (
+      parsed?.version !== 1 ||
+      !Array.isArray(parsed.results) ||
+      typeof parsed.bests !== 'object' ||
+      parsed.bests === null
+    ) {
+      return empty();
+    }
     return parsed;
   } catch {
     return empty();
@@ -46,8 +72,10 @@ function load(): StorageSchema {
 }
 
 function persist(data: StorageSchema): void {
+  const ls = getLocalStorage();
+  if (!ls) return;
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(data));
+    ls.setItem(KEY, JSON.stringify(data));
   } catch {
     /* storage full/unavailable — app continues statelessly */
   }
